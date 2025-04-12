@@ -3,15 +3,11 @@ output "vpc_id" {
 }
 
 output "private_subnets" {
-  value = aws_subnet.private[*].id
+  value = var.private_subnets
 }
 
 output "public_subnets" {
-  value = aws_subnet.public[*].id
-}
-
-output "security_group_default" {
-  value = aws_security_group.default_allow_all_outbound.id
+  value = var.public_subnets
 }
 
 output "queue_s3_object_created_url" {
