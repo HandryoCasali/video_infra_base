@@ -18,6 +18,10 @@ output "queue_s3_object_created_url" {
   value = aws_sqs_queue.s3_object_created.id
 }
 
+output "s3_object_created_name" {
+  value = aws_s3_bucket.meu_bucket.bucket_domain_name
+}
+
 output "queue_video_uploaded_url" {
   value = aws_sqs_queue.video_uploaded.id
 }
