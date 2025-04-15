@@ -45,3 +45,11 @@ module "sqs" {
     bucket_arn = module.database.bucket_arn
     aws_account_id = data.aws_caller_identity.current.account_id
 }
+
+module "ecr" {
+  source = "./module/ecr"
+}
+
+module "ecs" {
+  source = "./module/ecs"
+}
