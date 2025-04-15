@@ -23,6 +23,9 @@ resource "aws_apigatewayv2_route" "any_route" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.alb_integration.id}"
+  # Auth
+  authorizer_id = aws_apigatewayv2_authorizer.cognito_authorizer.id
+  authorization_type = "JWT"
 }
 
 resource "aws_apigatewayv2_stage" "default" {
