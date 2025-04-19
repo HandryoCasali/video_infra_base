@@ -79,7 +79,7 @@ module "cognito" {
 
   user_pool_name   = var.user_pool_name
   client_name      = var.client_name
-  domain_name      = var.domain_name
+  domain_name      = "${data.aws_caller_identity.current.account_id}-${var.domain_name}"
   oauth_flows      = var.oauth_flows
   oauth_scopes     = var.oauth_scopes
   tags             = var.tags
