@@ -1,51 +1,39 @@
 output "vpc_id" {
-  value = aws_vpc.main.id
-}
-
-output "private_subnets" {
-  value = aws_subnet.private[*].id
+  value = module.network.vpc_id
 }
 
 output "public_subnets" {
-  value = aws_subnet.public[*].id
+  value = module.network.public_subnets
 }
 
-output "security_group_default" {
-  value = aws_security_group.default_allow_all_outbound.id
-}
-
-output "queue_s3_object_created_url" {
-  value = aws_sqs_queue.s3_object_created.id
-}
-
-output "s3_object_created_name" {
-  value = aws_s3_bucket.meu_bucket.bucket_domain_name
-}
-
-output "queue_video_uploaded_url" {
-  value = aws_sqs_queue.video_uploaded.id
-}
-
-output "queue_notification_url" {
-  value = aws_sqs_queue.notification.id
-}
-
-output "dynamodb_table_name" {
-  value = aws_dynamodb_table.videos.name
-}
-
-output "alb_dns_name" {
-  value = aws_lb.main.dns_name
+output "private_subnets" {
+  value = module.network.private_subnets
 }
 
 output "alb_arn" {
-  value = aws_lb.main.arn
+  value = module.alb.alb_arn
 }
 
-output "api_gtw_url" {
-  value = aws_apigatewayv2_api.http_api.api_endpoint
+output "alb_dns" {
+  value = module.alb.alb_dns_name
 }
 
-output "video_cluster_name"{
-    value = aws_ecs_cluster.video_cluster.name
+output "apigtw_url" {
+  value = module.apigtw.api_gtw_url
+}
+
+output "cognito_url" {
+  value = module.cognito.domain_url
+}
+
+
+output "client_id" {
+  value = module.cognito.client_id
+  sensitive = true
+}
+
+output "client_secret" {
+  value =  module.cognito.client_secret
+  sensitive = true
+
 }

@@ -5,24 +5,33 @@ resource "aws_apigatewayv2_api" "http_api" {
 
 resource "aws_apigatewayv2_vpc_link" "alb_link" {
   name               = "alb-vpc-link"
-  subnet_ids         = aws_subnet.public[*].id
-  security_group_ids = [aws_security_group.alb_sg.id]
+  subnet_ids         = var.public_subnets
+  security_group_ids = [var.alb_sg.id]
 }
 
 resource "aws_apigatewayv2_integration" "alb_integration" {
   api_id             = aws_apigatewayv2_api.http_api.id
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
-  integration_uri = aws_lb_listener.http.arn
+  integration_uri    = var.alb_listener_arn
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.alb_link.id
   payload_format_version = "1.0"
+  
+  #add userId
+  request_parameters = {
+    "append:header.usuarioId" = "$context.authorizer.claims.username",
+    "append:header.userId" = "$context.authorizer.claims.username",
+  }
 }
 
 resource "aws_apigatewayv2_route" "any_route" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.alb_integration.id}"
+  # Auth
+  authorizer_id = aws_apigatewayv2_authorizer.cognito_authorizer.id
+  authorization_type = "JWT"
 }
 
 resource "aws_apigatewayv2_stage" "default" {
