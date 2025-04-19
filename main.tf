@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.3.0"
 
   backend "s3" {
-    bucket = "${data.aws_caller_identity.current.account_id}-terraform-state-fiapx"
+    bucket = "561266514983-terraform-state-fiapx"
     key    = "infra-core/terraform.tfstate"
     region = "us-east-1"
   }
