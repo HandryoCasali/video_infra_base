@@ -17,6 +17,12 @@ resource "aws_apigatewayv2_integration" "alb_integration" {
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.alb_link.id
   payload_format_version = "1.0"
+  
+  #add userId
+  request_parameters = {
+    "append:header.usuarioId" = "$context.authorizer.claims.username",
+    "append:header.userId" = "$context.authorizer.claims.username",
+  }
 }
 
 resource "aws_apigatewayv2_route" "any_route" {
